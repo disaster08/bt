@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts :: header"></head>
+<body>
+<nav th:replace="layouts :: navbar"></nav>
+
+
+<div class="container">
+
+    <div class="col-10">
+
+        <form action="/issue/save" th:object="${issue}" method="POST" class="col-sm-5" id="content"
+              style="border-left: #dbe0e3 1px solid;">
+
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Project Name</label>
+                <select th:field="${issue.ProjectName}" class="form-control" id="exampleFormControlInput1">
+                    <option th:value="MARKETING">Marketing</option>
+                    <option th:value="IT">IT</option>
+                    <option th:value="HELPDESK">Help Desk</option>
+                    <option th:value="SHAREPOIN">SharePoint</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Issue type</label>
+                <select th:field="${issue.issueType}" class="form-control" id="exampleFormControlSelect1">
+                    <option th:value="BUG">Bug</option>
+                    <option th:value="CHANGE">Change</option>
+                    <option th:value="TASK">Task</option>
+                    <option th:value="ERROR">Error</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Priority</label>
+                <select th:field="${issue.priority}" class="form-control" id="exampleFormControlSelect2">
+                    <option th:value="LOW">Low</option>
+                    <option th:value="MEDIUM">Medium</option>
+                    <option th:value="HIGH">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Enter Description</label>
+                <input type="text" placeholder="Description" th:field="${issue.description}" class="form-control"
+                       id="exampleFormControlTextarea1">
+            </div>
+
+            <div class="form-group">
+                <label>Assignee</label>
+                <select th:field="${issue.assignee}" class="form-control">
+                    <option th:each="user : ${allUsers}"
+                            th:value="${user.userId}"
+                            th:text="${user.firstName}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Reporter</label>
+                <select th:field="${issue.reporter}" class="form-control">
+                    <option th:each="user : ${allUsers}"
+                            th:value="${user.userId}"
+                            th:text="${user.firstName}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div class="">
+                    <button type="submit" class="btn btn-primary btn-block">Create</button>
+                </div>
+            </div>
+
+        </form>
+        </div>
+
+ </div>
+
+
+</body>
+</html>

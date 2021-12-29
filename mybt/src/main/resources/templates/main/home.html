@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+
+<nav th:replace="layouts :: navbar"></nav>
+
+<body>
+
+
+
+<div class="container">
+
+<!--    <h3>Main Dashboard</h3>-->
+<!--    <a th:text="${versionNumber}"></a>-->
+<!--    <br>-->
+<!--    <a th:text="${loggedInUser}"></a>-->
+<!--    <hr>-->
+
+    <h1>Current Issues</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Project Name</th>
+                    <th>Issue Type</th>
+                    <th>Priority</th>
+                    <th>Description</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="issues : ${issuesList}">
+                    <td th:text="${issues.projectName}" />
+                    <td th:text="${issues.issueType}" />
+                    <td th:text="${issues.priority}" />
+                    <td th:text="${issues.description}" />
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

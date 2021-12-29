@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts :: header"></head>
+<body>
+<nav th:replace="layouts :: navbar"></nav>
+
+<div class="container">
+    <form action="/issue/save" th:object="${issue}" method="POST">
+
+        <select th:field="${issue.ProjectName}">
+            <option th:value="MARKETING">Marketing</option>
+            <option th:value="IT">IT</option>
+            <option th:value="HELPDESK">Help Desk</option>
+            <option th:value="SHAREPOIN">SharePoint</option>
+        </select>
+
+        <select th:field="${issue.issueType}">
+            <option th:value="BUG">Bug</option>
+            <option th:value="CHANGE">Change</option>
+            <option th:value="TASK">Task</option>
+            <option th:value="ERROR">Error</option>
+        </select>
+
+        <select th:field="${issue.priority}">
+            <option th:value="LOW">Low</option>
+            <option th:value="MEDIUM">Medium</option>
+            <option th:value="HIGH">High</option>
+        </select>
+
+        <input type="text" placeholder="Description" th:field="${issue.description}">
+
+        <select th:field="${issue.assignee}" >
+            <option th:each = "user : ${allUsers}"
+                    th:value = "${user.userId}"
+                    th:text = "${user.firstName}">
+            </option>
+        </select>
+        <select th:field="${issue.reporter}" >
+            <option th:each = "user : ${allUsers}"
+                    th:value = "${user.userId}"
+                    th:text = "${user.firstName}">
+            </option>
+        </select>
+
+        <button type="submit">Create</button>
+    </form>
+</div>
+</body>
+</html>
