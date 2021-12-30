@@ -92,8 +92,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         issue1.setIssueType("help desk");
         issue1.setPriority("medium");
         issue1.setDescription("monitor is broken, please help");
-        issue1.setAssignee(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
-        issue1.setReporter(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue1.setAssigneeId(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue1.setReporterId(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue1.setReporterName(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getUsername());
         issueRepo.save(issue1);
 
         Issue issue2 = new Issue();
@@ -101,8 +102,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         issue2.setIssueType("help desk");
         issue2.setPriority("high");
         issue2.setDescription("laptop is rebooting every 5 mins");
-        issue2.setAssignee(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
-        issue2.setReporter(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue2.setAssigneeId(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue2.setReporterId(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue2.setReporterName(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getUsername());
         issueRepo.save(issue2);
 
         Issue issue3 = new Issue();
@@ -110,8 +112,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         issue3.setIssueType("bug");
         issue3.setPriority("high");
         issue3.setDescription("report data is incorrect");
-        issue3.setAssignee(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
-        issue3.setReporter(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue3.setAssigneeId(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue3.setReporterId(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue3.setReporterName(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getUsername());
         issueRepo.save(issue3);
 
         Issue issue4 = new Issue();
@@ -119,8 +122,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         issue4.setIssueType("help desk");
         issue4.setPriority("high");
         issue4.setDescription("keyboard is dead");
-        issue4.setAssignee(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
-        issue4.setReporter(userRepository.findByUsername("john").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue4.setAssigneeId(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue4.setReporterId(userRepository.findByUsername("john").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
+        issue4.setReporterName(userRepository.findByUsername("john").orElseThrow(() -> new ResourceNotFoundException("user not found")).getUsername());
         issueRepo.save(issue4);
     }
 }

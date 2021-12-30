@@ -20,8 +20,10 @@ public class Issue extends AuditModel {
     private String description;
     private String status = "APPROVAL";
 
-    private long reporter;
-    private long assignee;
+    private long reporterId;
+    private long assigneeId;
+
+    private String reporterName;
 
     public Issue() {
 
@@ -85,19 +87,27 @@ public class Issue extends AuditModel {
         this.status = status;
     }
 
-    public long getReporter() {
-        return reporter;
+    public long getReporterId() {
+        return reporterId;
     }
 
-    public void setReporter(long reporter) {
-        this.reporter = reporter;
+    public void setReporterId(long reporterId) {
+        this.reporterId = reporterId;
     }
 
-    public long getAssignee() {
-        return assignee;
+    public long getAssigneeId() {
+        return assigneeId;
     }
 
-    public void setAssignee(long assignee) {
-        this.assignee = assignee;
+    public void setAssigneeId(long assigneeId) {
+        this.assigneeId = assigneeId;
+    }
+
+    public String getReporterName() {
+        return reporterName;
+    }
+
+    public void setReporterName(String reporterName) {
+        this.reporterName = reporterName;
     }
 }

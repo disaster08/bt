@@ -89,9 +89,10 @@ public class IssueController {
         issue.setDescription(issue.getDescription().trim());
         //set approver
         User barry = userRepo.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found"));
-        User reporter = userRepo.findNameById(issue.getReporter()).orElseThrow(() -> new ResourceNotFoundException("user not found"));
-        issue.setAssignee(barry.getId());
-        issue.setReporter(reporter.getId());
+        User reporter = userRepo.findNameById(issue.getReporterId()).orElseThrow(() -> new ResourceNotFoundException("user not found"));
+        issue.setAssigneeId(barry.getId());
+        issue.setReporterId(reporter.getId());
+        issue.setReporterName(reporter.getUsername());
         return issueRepo.save(issue);
     }
 
@@ -117,13 +118,13 @@ public class IssueController {
 
             switch (issueType){
                 case "BUG":
-                    issue.setAssignee(agentBug.getId());
+                    issue.setAssigneeId(agentBug.getId());
                     break;
                 case "HELP DESK":
-                    issue.setAssignee(agentHelpDesk.getId());
+                    issue.setAssigneeId(agentHelpDesk.getId());
                     break;
                 case "REQUEST":
-                    issue.setAssignee(agentRequest.getId());
+                    issue.setAssigneeId(agentRequest.getId());
             }
             issue.setStatus("IN PROGRESS");
             return issueRepo.save(issue);
