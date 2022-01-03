@@ -1,13 +1,11 @@
 package com.yu.bt.mybt.controllers;
 
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
-import com.yu.bt.mybt.models.ERole;
-import com.yu.bt.mybt.models.Issue;
-import com.yu.bt.mybt.models.Role;
-import com.yu.bt.mybt.models.User;
+import com.yu.bt.mybt.models.*;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.repository.RoleRepository;
 import com.yu.bt.mybt.repository.UserRepository;
+import com.yu.bt.mybt.services.IssueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -37,6 +36,9 @@ public class IssueController {
     @Autowired
     RoleRepository roleRepo;
 
+    @Autowired
+    IssueService issueService;
+
     @GetMapping()
     @PreAuthorize("hasRole('AGENT') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<Issue> getAllIssues() {
@@ -52,8 +54,10 @@ public class IssueController {
 
     @GetMapping("/reporterIssues/{reporterId}")
     @PreAuthorize("hasRole('USER')")
-    public List<Issue> getReportersIssuesById(@PathVariable() Long reporterId) {
-        return issueRepo.getReportersIssuesById(reporterId);
+    public List<UsersIssuesDTO> getReporterIssuesById(@PathVariable() Long reporterId) {
+        List<UsersIssuesDTO> reportersData = issueService.getUsersIssues(reporterId);
+        if(reportersData.isEmpty()) return Collections.emptyList();;
+        return reportersData;
     }
 
 
@@ -89,10 +93,9 @@ public class IssueController {
         issue.setDescription(issue.getDescription().trim());
         //set approver
         User barry = userRepo.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found"));
-        User reporter = userRepo.findNameById(issue.getReporterId()).orElseThrow(() -> new ResourceNotFoundException("user not found"));
-        issue.setAssigneeId(barry.getId());
-        issue.setReporterId(reporter.getId());
-        issue.setReporterName(reporter.getUsername());
+        User reporter = userRepo.findNameById(issue.getReporter()).orElseThrow(() -> new ResourceNotFoundException("user not found"));
+        issue.setAssignee(barry.getId());
+        issue.setReporter(reporter.getId());
         return issueRepo.save(issue);
     }
 
@@ -118,13 +121,13 @@ public class IssueController {
 
             switch (issueType){
                 case "BUG":
-                    issue.setAssigneeId(agentBug.getId());
+                    issue.setAssignee(agentBug.getId());
                     break;
                 case "HELP DESK":
-                    issue.setAssigneeId(agentHelpDesk.getId());
+                    issue.setAssignee(agentHelpDesk.getId());
                     break;
                 case "REQUEST":
-                    issue.setAssigneeId(agentRequest.getId());
+                    issue.setAssignee(agentRequest.getId());
             }
             issue.setStatus("IN PROGRESS");
             return issueRepo.save(issue);
