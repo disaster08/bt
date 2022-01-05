@@ -2,12 +2,11 @@ package com.yu.bt.mybt.controllers;
 
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
 import com.yu.bt.mybt.models.*;
+import com.yu.bt.mybt.models.dto.UsersIssuesDTO;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.repository.RoleRepository;
 import com.yu.bt.mybt.repository.UserRepository;
 import com.yu.bt.mybt.services.IssueService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +17,13 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/issues")
 public class IssueController {
 
-    private static Logger logger = LoggerFactory.getLogger(IssueController.class);
+    //private static Logger logger = LoggerFactory.getLogger(IssueController.class);
 
     @Autowired
     IssueRepository issueRepo;
@@ -56,7 +54,7 @@ public class IssueController {
     @PreAuthorize("hasRole('USER')")
     public List<UsersIssuesDTO> getReporterIssuesById(@PathVariable() Long reporterId) {
         List<UsersIssuesDTO> reportersData = issueService.getUsersIssues(reporterId);
-        if(reportersData.isEmpty()) return Collections.emptyList();;
+        if(reportersData.isEmpty()) return Collections.emptyList();
         return reportersData;
     }
 

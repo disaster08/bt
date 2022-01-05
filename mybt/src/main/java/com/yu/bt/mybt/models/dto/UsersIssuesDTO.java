@@ -1,4 +1,4 @@
-package com.yu.bt.mybt.models;
+package com.yu.bt.mybt.models.dto;
 
 
 public class UsersIssuesDTO {

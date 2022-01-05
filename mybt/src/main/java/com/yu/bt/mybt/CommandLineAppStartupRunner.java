@@ -1,10 +1,8 @@
 package com.yu.bt.mybt;
 
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
-import com.yu.bt.mybt.models.ERole;
-import com.yu.bt.mybt.models.Issue;
-import com.yu.bt.mybt.models.Role;
-import com.yu.bt.mybt.models.User;
+import com.yu.bt.mybt.models.*;
+import com.yu.bt.mybt.repository.CommentRepository;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.repository.RoleRepository;
 import com.yu.bt.mybt.repository.UserRepository;
@@ -26,6 +24,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     PasswordEncoder encoder;
     @Autowired
     IssueRepository issueRepo;
+    @Autowired
+    CommentRepository commentRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -122,5 +122,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         issue4.setAssignee(userRepository.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
         issue4.setReporter(userRepository.findByUsername("john").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
         issueRepo.save(issue4);
+
+        Comment commentForIssue4 = new Comment();
+        commentForIssue4.setText("Go get your KB from HD");
+        commentForIssue4.setIssue(issue4);
+        commentRepo.save(commentForIssue4);
+
+        Comment commentForIssue4Number2 = new Comment();
+        commentForIssue4Number2.setText("test comment for issue #4");
+        commentForIssue4Number2.setIssue(issue4);
+        commentRepo.save(commentForIssue4Number2);
     }
 }

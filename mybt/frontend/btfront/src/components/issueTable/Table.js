@@ -70,8 +70,8 @@ export default function CustomizedTables(props) {
               <StyledTableCell align="right">{row.issueType}</StyledTableCell>
               <StyledTableCell align="right">{row.priority}</StyledTableCell>
               <StyledTableCell align="right">{row.status}</StyledTableCell>
-              <StyledTableCell align="right">{row.username}</StyledTableCell>     
-              <StyledTableCell align="right">{row.username}</StyledTableCell>         
+              <StyledTableCell align="right">{row.reporterName}</StyledTableCell>     
+              <StyledTableCell align="right">{row.assigneeName}</StyledTableCell>         
             </StyledTableRow>
           ))}
         </TableBody>

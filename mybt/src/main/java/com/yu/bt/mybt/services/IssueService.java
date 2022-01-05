@@ -1,14 +1,12 @@
 package com.yu.bt.mybt.services;
 
-import com.yu.bt.mybt.controllers.IssueController;
+
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
-import com.yu.bt.mybt.models.User;
-import com.yu.bt.mybt.models.UsersIssuesDTO;
+import com.yu.bt.mybt.models.dto.UsersIssuesDTO;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.models.Issue;
 import com.yu.bt.mybt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -48,5 +46,5 @@ public class IssueService {
         });
 
         return listOfData;
-    };
+    }
 }
