@@ -2,6 +2,7 @@ package com.yu.bt.mybt.controllers;
 
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
 import com.yu.bt.mybt.models.*;
+import com.yu.bt.mybt.models.dto.IssueDTO;
 import com.yu.bt.mybt.models.dto.UsersIssuesDTO;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.repository.RoleRepository;
@@ -23,7 +24,7 @@ import java.util.Optional;
 @RequestMapping("api/issues")
 public class IssueController {
 
-    //private static Logger logger = LoggerFactory.getLogger(IssueController.class);
+
 
     @Autowired
     IssueRepository issueRepo;
@@ -66,35 +67,40 @@ public class IssueController {
     }
 
     @PostMapping("/{issueId}")
-    public Issue updateIssue(@PathVariable Long issueId, @Valid @RequestBody Issue updateIssue) {
+    public Issue updateIssue(@PathVariable Long issueId, @Valid @RequestBody IssueDTO updateIssue) {
         return issueRepo.findById(issueId).map(issue -> {
             issue.setSummary(updateIssue.getSummary());
             issue.setIssueType(updateIssue.getIssueType());
             issue.setDescription(updateIssue.getDescription());
             issue.setPriority(updateIssue.getPriority());
             return issueRepo.save(issue);
-        }).orElseThrow(() -> new ResourceNotFoundException("issueId " + issueId + " not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException(Constant.ISSUE_ID + issueId + Constant.NOT_FOUND));
     }
 
     @DeleteMapping("/{issueId}")
-    public ResponseEntity<?> deleteIssue(@PathVariable Long issueId) {
+    public ResponseEntity<String> deleteIssue(@PathVariable Long issueId) {
         return issueRepo.findById(issueId).map(issue -> {
             issueRepo.delete(issue);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ResourceNotFoundException("issueId " + issueId + " not found"));
+            return ResponseEntity.ok("Issue " + issueId + " have been deleted");
+        }).orElseThrow(() -> new ResourceNotFoundException(Constant.ISSUE_ID + issueId + Constant.NOT_FOUND));
     }
 
     //@Valid validation annotation must be in create and other methods. Do not forget use validation annotations in entities. Like @NotNull, @Size annotation.
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Issue createNewIssue(@RequestBody @Valid Issue issue) {
-        issue.setDescription(issue.getDescription().trim());
+    public Issue createNewIssue(@RequestBody @Valid IssueDTO issue) {
+        Issue issueEnt = new Issue();
+
+        issueEnt.setDescription(issue.getDescription().trim());
         //set approver
-        User barry = userRepo.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException("user not found"));
-        User reporter = userRepo.findNameById(issue.getReporter()).orElseThrow(() -> new ResourceNotFoundException("user not found"));
-        issue.setAssignee(barry.getId());
-        issue.setReporter(reporter.getId());
-        return issueRepo.save(issue);
+        User barry = userRepo.findByUsername("barry").orElseThrow(() -> new ResourceNotFoundException(Constant.USER_NOT_FOUND));
+        User reporter = userRepo.findNameById(issue.getReporter()).orElseThrow(() -> new ResourceNotFoundException(Constant.USER_NOT_FOUND));
+        issueEnt.setAssignee(barry.getId());
+        issueEnt.setReporter(reporter.getId());
+        issueEnt.setIssueType(issue.getIssueType());
+        issueEnt.setSummary(issue.getSummary());
+        issueEnt.setPriority(issue.getPriority());
+        return issueRepo.save(issueEnt);
     }
 
     @PostMapping("/resolve/{issueId}")
@@ -113,9 +119,9 @@ public class IssueController {
 
             //assign issue to agents
             String issueType = issue.getIssueType();
-            User agentBug = userRepo.findByUsername("rob").orElseThrow(() -> new ResourceNotFoundException("user not found"));
-            User agentHelpDesk = userRepo.findByUsername("tom").orElseThrow(() -> new ResourceNotFoundException("user not found"));
-            User agentRequest = userRepo.findByUsername("jim").orElseThrow(() -> new ResourceNotFoundException("user not found"));
+            User agentBug = userRepo.findByUsername("rob").orElseThrow(() -> new ResourceNotFoundException(Constant.USER_NOT_FOUND));
+            User agentHelpDesk = userRepo.findByUsername("tom").orElseThrow(() -> new ResourceNotFoundException(Constant.USER_NOT_FOUND));
+            User agentRequest = userRepo.findByUsername("jim").orElseThrow(() -> new ResourceNotFoundException(Constant.USER_NOT_FOUND));
 
             switch (issueType){
                 case "BUG":
@@ -124,7 +130,7 @@ public class IssueController {
                 case "HELP DESK":
                     issue.setAssignee(agentHelpDesk.getId());
                     break;
-                case "REQUEST":
+                default:
                     issue.setAssignee(agentRequest.getId());
             }
             issue.setStatus("IN PROGRESS");

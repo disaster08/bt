@@ -3,6 +3,7 @@ package com.yu.bt.mybt.controllers;
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
 import com.yu.bt.mybt.models.Comment;
 import com.yu.bt.mybt.models.dto.CommentDTO;
+import com.yu.bt.mybt.models.Constant;
 import com.yu.bt.mybt.repository.CommentRepository;
 import com.yu.bt.mybt.repository.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class CommentController {
         return issueRepo.findById(issueId).map(issue -> {
             commentEnt.setIssue(issue);
             return commentRepo.save(commentEnt);
-        }).orElseThrow(() -> new ResourceNotFoundException("IssueId " + issueId + " not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException(Constant.ISSUE_ID + issueId + Constant.NOT_FOUND));
     }
 
     @PutMapping("/issues/{issueId}/comments/{commentId}")
@@ -53,7 +54,7 @@ public class CommentController {
         commentEnt.setIssue(commentRequest.getIssue());
 
         if (!issueRepo.existsById(issueId)) {
-            throw new ResourceNotFoundException("IssueId " + issueId + " not found");
+            throw new ResourceNotFoundException(Constant.ISSUE_ID + issueId + Constant.NOT_FOUND);
         }
 
         return commentRepo.findById(commentId).map(comment -> {
@@ -63,7 +64,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/issues/{issueId}/comments/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable(value = "issueId") Long issueId,
+    public ResponseEntity<String> deleteComment(@PathVariable(value = "issueId") Long issueId,
                                            @PathVariable(value = "commentId") Long commentId) {
 
         if (!issueRepo.existsById(issueId)) {
@@ -71,7 +72,7 @@ public class CommentController {
         }
         return commentRepo.findById(commentId).map(comment -> {
             commentRepo.delete(comment);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Comment with id " + commentId + " has been deleted");
         }).orElseThrow(() -> new ResourceNotFoundException("Comment not found with id " + commentId));
     }
 
