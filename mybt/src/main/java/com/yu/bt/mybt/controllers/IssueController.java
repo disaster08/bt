@@ -3,6 +3,7 @@ package com.yu.bt.mybt.controllers;
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
 import com.yu.bt.mybt.models.*;
 import com.yu.bt.mybt.models.dto.IssueDTO;
+import com.yu.bt.mybt.models.dto.IssuesAndCommentDTO;
 import com.yu.bt.mybt.models.dto.UsersIssuesDTO;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.repository.RoleRepository;
@@ -23,9 +24,6 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/issues")
 public class IssueController {
-
-
-
     @Autowired
     IssueRepository issueRepo;
 
@@ -46,9 +44,14 @@ public class IssueController {
     }
 
     @GetMapping("/assignedIssues/{userId}")
-    @PreAuthorize("hasRole('USER') or hasRole('APPROVER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ROLE_APPROVER')")
     public List<Issue> getAssigneeIssues(@PathVariable() Long userId) {
         return issueRepo.getAssigneeIssuesById(userId);
+    }
+
+    @GetMapping("/assignedIssuesAndComments/{userId}")
+    public List<IssuesAndCommentDTO> getAssigneeIssuesWithComments(@PathVariable() Long userId) {
+        return  issueService.getIssuesAndComments(userId);
     }
 
     @GetMapping("/reporterIssues/{reporterId}")
@@ -104,7 +107,7 @@ public class IssueController {
     }
 
     @PostMapping("/resolve/{issueId}")
-    @PreAuthorize("hasRole('AGENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Issue updateIssueStatusFromInProgressToResolved(@PathVariable Long issueId) {
             return issueRepo.findById(issueId).map(issue -> {
             issue.setStatus("RESOLVED");
@@ -113,7 +116,7 @@ public class IssueController {
     }
 
     @PostMapping("/approve/{issueId}")
-    @PreAuthorize("hasRole('APPROVER')")
+    @PreAuthorize("hasRole('ROLE_APPROVER')")
     public Issue updateIssueStatusFromAPPROVERToInProgress(@PathVariable Long issueId) {
         return issueRepo.findById(issueId).map(issue -> {
 

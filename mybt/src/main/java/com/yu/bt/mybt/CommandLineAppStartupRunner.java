@@ -96,6 +96,16 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         issue1.setReporter(userRepository.findByUsername("admin").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
         issueRepo.save(issue1);
 
+        Comment commentForIssue4 = new Comment();
+        commentForIssue4.setText("Go get your KB from HD");
+        commentForIssue4.setIssue(issue1);
+        commentRepo.save(commentForIssue4);
+
+        Comment commentForIssue4Number2 = new Comment();
+        commentForIssue4Number2.setText("test comment for issue #4");
+        commentForIssue4Number2.setIssue(issue1);
+        commentRepo.save(commentForIssue4Number2);
+
         Issue issue2 = new Issue();
         issue2.setSummary("Laptop problem");
         issue2.setIssueType("help desk");
@@ -123,14 +133,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         issue4.setReporter(userRepository.findByUsername("john").orElseThrow(() -> new ResourceNotFoundException("user not found")).getId());
         issueRepo.save(issue4);
 
-        Comment commentForIssue4 = new Comment();
-        commentForIssue4.setText("Go get your KB from HD");
-        commentForIssue4.setIssue(issue4);
-        commentRepo.save(commentForIssue4);
 
-        Comment commentForIssue4Number2 = new Comment();
-        commentForIssue4Number2.setText("test comment for issue #4");
-        commentForIssue4Number2.setIssue(issue4);
-        commentRepo.save(commentForIssue4Number2);
     }
 }

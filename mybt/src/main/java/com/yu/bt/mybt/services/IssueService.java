@@ -2,7 +2,9 @@ package com.yu.bt.mybt.services;
 
 
 import com.yu.bt.mybt.exception.ResourceNotFoundException;
+import com.yu.bt.mybt.models.dto.IssuesAndCommentDTO;
 import com.yu.bt.mybt.models.dto.UsersIssuesDTO;
+import com.yu.bt.mybt.repository.CommentRepository;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.models.Issue;
 import com.yu.bt.mybt.repository.UserRepository;
@@ -15,10 +17,13 @@ import java.util.*;
 @Service
 public class IssueService {
 
+
     @Autowired
     IssueRepository issueRepo;
     @Autowired
     UserRepository userRepo;
+    @Autowired
+    CommentRepository commentRepo;
 
 
     public List<UsersIssuesDTO> getUsersIssues(long userId){
@@ -46,5 +51,32 @@ public class IssueService {
         });
 
         return listOfData;
+    }
+
+    public List<IssuesAndCommentDTO> getIssuesAndComments(long userId){
+
+        List<Issue> issues = issueRepo.getReportersIssuesById(userId);
+        List<IssuesAndCommentDTO> listOfIssues = new ArrayList<>();
+
+        if(issues.isEmpty()) {
+            System.out.println("ERROR: issue list is empty");
+        }
+
+        issues.forEach(issue -> {
+            IssuesAndCommentDTO issuesAndCommentDTO = new IssuesAndCommentDTO();
+            issuesAndCommentDTO.setIssueId(issue.getIssueId());
+            issuesAndCommentDTO.setSummary(issue.getSummary());
+            issuesAndCommentDTO.setIssueType(issue.getIssueType());
+            issuesAndCommentDTO.setPriority(issue.getPriority());
+            issuesAndCommentDTO.setDescription(issue.getDescription());
+            issuesAndCommentDTO.setStatus(issue.getStatus());
+            issuesAndCommentDTO.setReporterId(issue.getReporter());
+            issuesAndCommentDTO.setAssigneeId(issue.getAssignee());
+            issuesAndCommentDTO.setReporterName(userRepo.findNameById(issue.getReporter()).orElseThrow(() -> new ResourceNotFoundException("issueId " + issue.getReporter() + " not found")).getUsername());
+            issuesAndCommentDTO.setAssigneeName(userRepo.findNameById(issue.getAssignee()).orElseThrow(() -> new ResourceNotFoundException("issueId " + issue.getReporter() + " not found")).getUsername());
+            issuesAndCommentDTO.setComments(commentRepo.getCommentsByIssueId(issue.getIssueId(), null));
+            listOfIssues.add(issuesAndCommentDTO);
+                });
+        return listOfIssues;
     }
 }
