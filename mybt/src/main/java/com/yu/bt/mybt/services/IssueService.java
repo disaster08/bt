@@ -17,16 +17,18 @@ import java.util.*;
 @Service
 public class IssueService {
 
+    private final IssueRepository issueRepo;
+    private final UserRepository userRepo;
+    private final CommentRepository commentRepo;
 
-    @Autowired
-    IssueRepository issueRepo;
-    @Autowired
-    UserRepository userRepo;
-    @Autowired
-    CommentRepository commentRepo;
+    public IssueService(IssueRepository issueRepo, UserRepository userRepo, CommentRepository commentRepo) {
+        this.issueRepo = issueRepo;
+        this.userRepo = userRepo;
+        this.commentRepo = commentRepo;
+    }
 
 
-    public List<UsersIssuesDTO> getUsersIssues(long userId){
+    public List<UsersIssuesDTO> getUsersIssues(long userId) {
         List<UsersIssuesDTO> listOfData = new ArrayList<>();
         List<Issue> reporterIssue;
         try {
@@ -53,12 +55,12 @@ public class IssueService {
         return listOfData;
     }
 
-    public List<IssuesAndCommentDTO> getIssuesAndComments(long userId){
+    public List<IssuesAndCommentDTO> getIssuesAndComments(long userId) {
 
         List<Issue> issues = issueRepo.getReportersIssuesById(userId);
         List<IssuesAndCommentDTO> listOfIssues = new ArrayList<>();
 
-        if(issues.isEmpty()) {
+        if (issues.isEmpty()) {
             System.out.println("ERROR: issue list is empty");
         }
 
@@ -76,7 +78,7 @@ public class IssueService {
             issuesAndCommentDTO.setAssigneeName(userRepo.findNameById(issue.getAssignee()).orElseThrow(() -> new ResourceNotFoundException("issueId " + issue.getReporter() + " not found")).getUsername());
             issuesAndCommentDTO.setComments(commentRepo.getCommentsByIssueId(issue.getIssueId(), null));
             listOfIssues.add(issuesAndCommentDTO);
-                });
+        });
         return listOfIssues;
     }
 }

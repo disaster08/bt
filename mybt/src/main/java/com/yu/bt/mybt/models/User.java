@@ -44,6 +44,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "reporter", targetEntity = Issue.class)
+    private Set<Issue> issues = new HashSet<>();
+
 
     public User() {
     }
@@ -94,4 +97,11 @@ public class User {
         this.roles = roles;
     }
 
+    public Set<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(Set<Issue> issues) {
+        this.issues = issues;
+    }
 }
