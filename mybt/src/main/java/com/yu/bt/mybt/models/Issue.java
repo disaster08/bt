@@ -23,6 +23,7 @@ public class Issue extends AuditModel {
     private long reporter;
     private long assignee;
 
+
     public Issue() {
 
     }

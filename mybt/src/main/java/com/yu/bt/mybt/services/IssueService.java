@@ -8,7 +8,6 @@ import com.yu.bt.mybt.repository.CommentRepository;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.models.Issue;
 import com.yu.bt.mybt.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,11 +20,15 @@ public class IssueService {
     private final UserRepository userRepo;
     private final CommentRepository commentRepo;
 
+
     public IssueService(IssueRepository issueRepo, UserRepository userRepo, CommentRepository commentRepo) {
         this.issueRepo = issueRepo;
         this.userRepo = userRepo;
         this.commentRepo = commentRepo;
     }
+
+
+
 
 
     public List<UsersIssuesDTO> getUsersIssues(long userId) {

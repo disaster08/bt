@@ -3,11 +3,12 @@ package com.yu.bt.mybt.repository;
 import com.yu.bt.mybt.models.Issue;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public interface IssueRepository extends CrudRepository<Issue, Long> {
 
     @Override
