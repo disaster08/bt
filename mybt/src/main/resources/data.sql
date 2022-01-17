@@ -3,11 +3,11 @@
 --insert into users (id, username, email, password) values (3, 'steve', 'reeves@gmail.com', '123456');
 --insert into users (id, username, email, password) values (4, 'admin', 'admin@gmail.com', '123456');
 
---INSERT INTO roles(name) VALUES('ROLE_USER');
---INSERT INTO roles(name) VALUES('ROLE_ADMIN');
---INSERT INTO roles(name) VALUES('ROLE_AGENT');
---INSERT INTO roles(name) VALUES('ROLE_APPROVER');
---INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO roles(name) VALUES('ROLE_USER');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+INSERT INTO roles(name) VALUES('ROLE_AGENT');
+INSERT INTO roles(name) VALUES('ROLE_APPROVER');
+INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
 
 --INSERT INTO USER_ROLES(user_id, role_id) VALUES(4, 1);
 --INSERT INTO USER_ROLES(user_id, role_id) VALUES(4, 2);
