@@ -39,7 +39,6 @@ public class IssueController {
     @GetMapping()
     @PreAuthorize("hasRole('AGENT') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<Issue> getAllIssues() {
-
         return issueRepo.findAll();
     }
 

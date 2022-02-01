@@ -1,6 +1,7 @@
 package com.yu.bt.mybt.services;
 
 
+import com.yu.bt.mybt.models.dto.IssuesAndCommentDTO;
 import com.yu.bt.mybt.models.dto.UsersIssuesDTO;
 import com.yu.bt.mybt.repository.CommentRepository;
 import com.yu.bt.mybt.repository.IssueRepository;
@@ -36,7 +37,17 @@ class IssueServiceTest {
     }
 
     @Test
-    @Disabled
     void getIssuesAndComments() {
+
+        IssueRepository issues = mock(IssueRepository.class);
+        UserRepository users = mock(UserRepository.class);
+        CommentRepository comments = mock(CommentRepository.class);
+
+        IssueService issueService = new IssueService(issues, users, comments);
+
+        List<IssuesAndCommentDTO> issueAndComments = issueService.getIssuesAndComments(1L);
+
+        Assertions.assertTrue(issueAndComments.isEmpty());
+
     }
 }
