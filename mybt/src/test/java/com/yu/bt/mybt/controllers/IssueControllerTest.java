@@ -67,7 +67,4 @@ class IssueControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].priority").value("high"));
 
     }
-
-
-
 }
