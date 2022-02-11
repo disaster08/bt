@@ -2,7 +2,7 @@ package com.yu.bt.mybt.SOLID.SRP;
 
 import java.nio.file.Path;
 
-public class SaveBooks {
+public class SaveBooksAsFiles {
 
     public void saveAsPdfTo(Path path) {
         // Convert to pdf

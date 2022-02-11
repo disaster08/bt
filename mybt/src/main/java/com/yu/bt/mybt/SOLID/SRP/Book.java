@@ -11,12 +11,6 @@ public class Book {
         this.pages = pages;
     }
 
-    public void printPage(int page) {
-        // Find page
-        // Send to printer
-    }
-
-
 
     public static void main(String[] args) {
         new Book(List.of(
