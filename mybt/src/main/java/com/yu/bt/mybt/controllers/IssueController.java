@@ -5,6 +5,7 @@ import com.yu.bt.mybt.models.*;
 import com.yu.bt.mybt.models.dto.IssueDTO;
 import com.yu.bt.mybt.models.dto.IssuesAndCommentDTO;
 import com.yu.bt.mybt.models.dto.UsersIssuesDTO;
+import com.yu.bt.mybt.repository.CommentRepository;
 import com.yu.bt.mybt.repository.IssueRepository;
 import com.yu.bt.mybt.repository.RoleRepository;
 import com.yu.bt.mybt.repository.UserRepository;
@@ -35,6 +36,7 @@ public class IssueController {
 
     @Autowired
     IssueService issueService;
+
 
     @GetMapping()
     @PreAuthorize("hasRole('AGENT') or hasRole('MODERATOR') or hasRole('ADMIN')")

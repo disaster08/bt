@@ -13,11 +13,15 @@ public class Book {
 
 
     public static void main(String[] args) {
-        new Book(List.of(
-           "Page1",
-           "Page2",
-           "Page3"
+        Book pages = new Book(List.of(
+                "Page1",
+                "Page2",
+                "Page3"
         ));
-    }
 
+        ExportFiles exportFiles = new SaveAsPDF(pages);
+        exportFiles.export(Path.of("C:/pages"));
+
+
+    }
 }

@@ -27,10 +27,6 @@ public class IssueService {
         this.commentRepo = commentRepo;
     }
 
-
-
-
-
     public List<UsersIssuesDTO> getUsersIssues(long userId) {
         List<UsersIssuesDTO> listOfData = new ArrayList<>();
         List<Issue> reporterIssue;
